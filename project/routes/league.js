@@ -4,7 +4,6 @@ const league_utils = require("./utils/league_utils");
 
 router.get("/getDetails", async (req, res, next) => {
   try {
-      console.log("reach here")
 
     const league_details = await league_utils.getLeagueDetails();
     res.send(league_details);

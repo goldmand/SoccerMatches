@@ -1,8 +1,11 @@
 const axios = require("axios");
+const DButils = require("./DButils");
+
+const { compareSync } = require("bcryptjs");
+const { response } = require("express");
 const LEAGUE_ID = 271;
 
 async function getLeagueDetails() {
-  console.log("reach here")
   const league = await axios.get(
     `https://soccer.sportmonks.com/api/v2.0/leagues/${LEAGUE_ID}`,
     {
@@ -20,11 +23,17 @@ async function getLeagueDetails() {
       },
     }
   );
+  const data = await DButils.execQuery('SELECT * FROM dbo.future_games');
+  
   return {
     league_name: league.data.data.name,
     current_season_name: league.data.data.season.data.name,
     current_stage_name: stage.data.data.name,
     // next game details should come from DB
-  };
+    game_details:data
+  
+  }
+    
+    
 }
 exports.getLeagueDetails = getLeagueDetails;
